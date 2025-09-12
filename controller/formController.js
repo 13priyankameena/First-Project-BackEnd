@@ -14,14 +14,24 @@ const createFormTRecord = async (req, res) => {
 
 
     try {
-        if (data) {
-            await data.save();
-            console.log("New record Created");
-        }
-        res.send(data);
-    } catch (error) {
-        console.log(error.message)
-    }
+    await data.save();
+    console.log("New record Created");
+
+    // send success response
+    res.status(201).json({
+      success: true,
+      message: "Form submitted successfully",
+      data,
+    });
+  } catch (error) {
+    console.error("Error saving record:", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to create record",
+      error: error.message,
+    });
+  }
 };
 
 const getFormrecords = async (req, res) => {
