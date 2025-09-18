@@ -13,7 +13,7 @@ const MONGOURL = process.env.MONGO_URL;
 
 
 
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 
 //database connection
