@@ -26,22 +26,23 @@ console.log("User found:", user);
 
 
   const token = jwt.sign(
-      {ID:user._id, username:user.username},
+      {
+        ID:user._id, username:user.username},
       process.env.JWT_SECRET
     );
     console.log(token);
 
 
-    // Set token in cookie
+//     // Set token in cookie
 
-    res.cookie("token", token, {
-      httpOnly: true,   // cookie not accessible by JS
-      secure: false,    // change to true if using HTTPS
-      maxAge: 60 * 60 * 1000 // 1 hour
-    });
+//     res.cookie("token", token, {
+//       httpOnly: true,   // cookie not accessible by JS
+//       secure: false,    // change to true if using HTTPS
+//       maxAge: 60 * 60 * 1000 // 1 hour
+//     });
 
 
-      res.status(200).json({ success: true, message: "Login successful",token });
+      res.status(200).json({ success: true, message: "Login successful",token});
 
     
     } else {
