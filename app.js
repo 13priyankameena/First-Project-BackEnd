@@ -2,10 +2,10 @@ import express from 'express';
 import ConnectDBS from './db/ConnectDB.js';
 import route from './routes/route.js';
 import routechart from './routes/routeChart.js';
-import cors from 'cors'; 
+import cors from 'cors';
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-const app= express();
+const app = express();
 
 dotenv.config();
 const PORT = process.env.PORT || 8000;
@@ -25,14 +25,8 @@ app.use(express.json());
 
 app.use(cors());
 
+app.use('/', routechart);
 
-// origin : "http://localhost:3000", // your frontend URL
-//   credentials : true                // allow cookies
-
-//route
-
-    app.use('/',routechart);
-
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
     console.log(`Server is Running on port: ${PORT}`);
 })
