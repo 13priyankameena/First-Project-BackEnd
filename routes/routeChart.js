@@ -6,6 +6,7 @@ import { getuserLogin, createLoginRecord } from '../controller/loginController.j
 import { getFormrecords, createFormTRecord } from '../controller/formController.js';
 import { verifyToken } from '../middleware/verifyToken.js';
 import { sendOTP, verifyOTP } from '../controller/otpController.js';
+import { createfileUpload,sendUploadedFile } from '../controller/fileUploadController.js';
 const routechart = express.Router();
 
 // routes
@@ -28,7 +29,8 @@ routechart.post('/chartDB/employees/create', verifyToken, createEmployeesRecord)
 routechart.post('/send-otp', sendOTP);
 routechart.post('/verify-otp', verifyOTP);
 
-
+routechart.post('/chartDB/files/create', verifyToken, createfileUpload);
+routechart.get('/chartDB/files', sendUploadedFile);
 
 
 
