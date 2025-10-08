@@ -14,7 +14,7 @@ try {
 
     res.status(201).json({
         success:true,
-        message:"New File Uploaded",
+        message:"Successfully File Uploaded",
     })
     
 } catch (error) {
@@ -22,7 +22,7 @@ try {
     console.error("Error in Uploading File",error.message);
     res.status(500).json({
         success:false,
-        message:"Failed to Upload File",
+        message:"Failed to Upload File ,request Entity too large",
         error:error.message,
 });
     
@@ -56,4 +56,27 @@ const sendUploadedFile = async(req,res) =>{
    
 }
 
-export {createfileUpload,sendUploadedFile};
+
+//For Delete Files
+
+const deleteFiles = async(req,res) => {
+    
+    try {
+        const id = req.params.id;
+        await file.findByIdAndDelete(id);
+        res.status(200).json({
+            success:true,
+            message:"File Deleted Successfully",
+        })
+        
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:"Error in Deleting file",
+            error:error.message,
+        })
+       console.log(error.message); 
+    }
+}
+
+export {createfileUpload,sendUploadedFile,deleteFiles};

@@ -116,11 +116,24 @@ const FileSchema =new mongoose.Schema({
         required:true,
     }
 })
+
+const VideoSchema =new mongoose.Schema({
+
+    FileName:{
+        type:String,
+        required:true,
+    },
+    Base64File:{
+        type:String,
+        required:true,
+    }
+})
 const chartModel = mongoose.model('chartdata', chartSchema);
 const student = mongoose.model('student', studentSchema);
 const employee = mongoose.model('employee', EmployeesSchema);
 const login = mongoose.model('login', LoginSchema);
 const form = mongoose.model('form', FormSchema);
 const file =mongoose.model('file',FileSchema);
+const video =mongoose.model('video',VideoSchema);
 
-export { chartModel, student, employee, login, form, file };
+export { chartModel, student, employee, login, form, file ,video};
