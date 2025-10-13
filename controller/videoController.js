@@ -35,7 +35,7 @@ const getVideoUploadedFile = async(req,res) =>{
             const data = await video.find({});
             
             res.status(200).json({
-                sucess:true,
+                success:true,
                 message:"Found All video Files",
                 data,
             })
@@ -52,4 +52,25 @@ const getVideoUploadedFile = async(req,res) =>{
     }
 }
 
-export {createVideoUpload,getVideoUploadedFile};
+const deleteVideoFile = async(req,res) =>{
+    try {
+        const id  = req.params.id;
+        await video.findByIdAndDelete(id);
+        res.status(200).json({
+            success:true,
+            message:"Video File Deleted Successfully",
+
+        })
+        
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:"Error in Deleting file",
+            error:error.message,
+        })
+       console.log(error.message); 
+        
+    }
+}
+
+export {createVideoUpload,getVideoUploadedFile,deleteVideoFile};

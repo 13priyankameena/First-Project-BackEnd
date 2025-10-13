@@ -7,7 +7,7 @@ import { getFormrecords, createFormTRecord } from '../controller/formController.
 import { verifyToken } from '../middleware/verifyToken.js';
 import { sendOTP, verifyOTP } from '../controller/otpController.js';
 import { createfileUpload,sendUploadedFile,deleteFiles } from '../controller/fileUploadController.js';
-import { createVideoUpload,getVideoUploadedFile } from '../controller/videoController.js';
+import { createVideoUpload,getVideoUploadedFile,deleteVideoFile } from '../controller/videoController.js';
 const routechart = express.Router();
 
 // routes
@@ -35,7 +35,8 @@ routechart.get('/chartDB/files', sendUploadedFile);
 routechart.delete('/chartDB/files/:id',verifyToken,deleteFiles);
 
 routechart.post('/chartDB/videos/create', verifyToken, createVideoUpload);
-routechart.get('/chartDB/videos',getVideoUploadedFile)
+routechart.get('/chartDB/videos',verifyToken,getVideoUploadedFile);
+routechart.delete('/chartDB/videos/:id',verifyToken,deleteVideoFile);
 
 
 
