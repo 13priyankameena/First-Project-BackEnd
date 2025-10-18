@@ -90,7 +90,6 @@ console.log(opStore[username]);
         return res.status(200).json({
             success: true,
             message: "OTP sent successfully!",
-            sentTo: EMAIL_USER,
             username,
         });
     }
