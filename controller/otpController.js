@@ -79,7 +79,7 @@ console.log(opStore[username]);
          // Send OTP via Resend
         const info = await resend.emails.send({
             from: "Priyanka App <onboarding@resend.dev>",  // default Resend email or your verified domain
-            to: EMAIL_USER,
+            to: "13priyankameena13@gmail.com",
             subject: "Your OTP Code",
             text: `Hello ${username}, your OTP is: ${otp}`,
             html: `<b>Hello ${username},</b><br><p>Your OTP is: <strong>${otp}</strong></p>`,
