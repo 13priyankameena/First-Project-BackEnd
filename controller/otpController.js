@@ -12,7 +12,7 @@ let opStore = {};
 //create transporter for email
 
 const transporter = nodemailer.createTransport({
-    host: "gmail",
+    host: "smtp.gmail.com",
     port: 465,         // or 587
     secure: true,      // true for 465, false for 587
     auth: {
