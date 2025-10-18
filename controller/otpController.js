@@ -12,16 +12,16 @@ let opStore = {};
 //create transporter for email
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "gmail",
     port: 465,         // or 587
     secure: true,      // true for 465, false for 587
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    tls: {
-        rejectUnauthorized: false, // allow self-signed certs
-    },
+    // tls: {
+    //     rejectUnauthorized: false, // allow self-signed certs
+    // },
 })
 
 //send OTP
