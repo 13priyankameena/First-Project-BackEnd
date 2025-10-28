@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { Resend } from 'resend';
+import { login } from "../models/chartSchema.js";
 
 dotenv.config();
 
@@ -11,10 +12,6 @@ dotenv.config();
 let opStore = {};
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-
-
-
 
 
 //create transporter for email
@@ -38,10 +35,20 @@ export const sendOTP = async (req, res) => {
 
     try {
         const { username } = req.body;
-        console.log(req.body);
+        console.log("otp controller recieve req.body", username);
+
         if (!username) {
             return res.status(400).json({ success: false, message: "Username required" });
         }
+
+        const user = await login.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const email = user.email;
+        console.log("email recieved for this user", email);
 
         //Generate 6-digit OTP
         console.log("FOR GEnerating OTP recieved username", username);
@@ -55,9 +62,9 @@ export const sendOTP = async (req, res) => {
 
         //store otp for particular user
 
-        opStore[username] = otp;
+        opStore[email] = otp;    //Saves OTP in memory like { "user@gmail.com": "458920" }
 
-console.log(opStore[username]);
+        console.log("opStore[email]", opStore[email]);
 
 
         // Send OTP via Gmail
@@ -76,10 +83,10 @@ console.log(opStore[username]);
 
 
 
-         // Send OTP via Resend
+        // Send OTP via Resend
         const info = await resend.emails.send({
             from: "Priyanka App <onboarding@resend.dev>",  // default Resend email or your verified domain
-            to: "13priyankameena13@gmail.com",
+            to: email,
             subject: "Your OTP Code",
             text: `Hello ${username}, your OTP is: ${otp}`,
             html: `<b>Hello ${username},</b><br><p>Your OTP is: <strong>${otp}</strong></p>`,
@@ -89,7 +96,7 @@ console.log(opStore[username]);
 
         return res.status(200).json({
             success: true,
-            message: "OTP sent successfully!",
+            message: `OTP sent to ${email}`,
             username,
         });
     }
@@ -115,13 +122,24 @@ export const verifyOTP = async (req, res) => {
             return res.status(400).json({ sucess: false, message: "Username and OTP required" });
         }
 
+        const user = await login.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const email = user.email;
+        console.log("email recieved for this user", email);
+
+
+
         // check if OTP exists for this user
-        if (opStore[username] !== otp) {
+        if (opStore[email] !== otp) {
             return res.status(400).json({ success: false, message: "Invalid or expired OTP" });
         }
         //OTP matched -> remove from store
 
-        delete opStore[username];
+        delete opStore[email];
 
         //Generate JWT token
 

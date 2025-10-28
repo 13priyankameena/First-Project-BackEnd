@@ -5,24 +5,21 @@ import { sendOTP } from "./otpController.js";
 
 const getuserLogin = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password} = req.body;
     console.log("Received:", req.body);
+
     // username + password check
+
     const user = await login.findOne({ username, password });
-
-
-    // const allUsers = await login.find({});
-    // console.log("All Users in DB:", allUsers);
-
-
-
-
-
-
     console.log("User found:", user);
+
     if (user) {
-      // Call sendOTP function (hardcoded email)
+
+      // Call sendOTP function 
+
       req.body.username = username; // required by sendOTP
+       req.body.email = user.email;
+
       return await sendOTP(req, res);
 
       // Generate JWT token
@@ -52,7 +49,7 @@ const createLoginRecord = async (req, res) => {
 
   try {
 
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
 
     // check if username already exist
 
@@ -63,7 +60,7 @@ const createLoginRecord = async (req, res) => {
 
     //create new user
 
-    const data = new login({ username, password });
+    const data = new login({ username, password, email });
     if (data) {
       await data.save();
       console.log("New record Created", data);
