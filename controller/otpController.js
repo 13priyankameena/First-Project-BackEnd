@@ -17,11 +17,13 @@ let opStore = {};
 //create transporter for email
 
 const transporter = nodemailer.createTransport({
-   service:"gmail",
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
+   host: "smtp-relay.brevo.com",
+  port: 587,
+  secure: false, // true for 465, false for 587
+  auth: {
+    user: process.env.BREVO_USER,
+    pass: process.env.BREVO_PASS,
+  },
     // tls: {
     //     rejectUnauthorized: false, // allow self-signed certs
     // },
@@ -69,7 +71,7 @@ export const sendOTP = async (req, res) => {
 
         const info = await transporter.sendMail({
 
-            from: `"Priyanka" <${process.env.EMAIL_USER}>`,    //sender Email
+            from: `"Priyanka" <${process.env.BREVO_USER}>`,    //sender Email
             to: email,
             subject: "Your OTP Code",  // email subject
             text: `Hello Priyanka, your OTP is: ${otp}`,  // Plain text (for fallback)
