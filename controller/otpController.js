@@ -11,23 +11,21 @@ dotenv.config();
 
 let opStore = {};
 
-// const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 
 //create transporter for email
 
-const transporter = nodemailer.createTransport({
-   host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false, // true for 465, false for 587
-  auth: {
-    user: process.env.BREVO_USER,
-    pass: process.env.BREVO_PASS,
-  },
-    // tls: {
-    //     rejectUnauthorized: false, // allow self-signed certs
-    // },
-})
+// const transporter = nodemailer.createTransport({
+//    service:"gmail",
+//     auth: {
+//         user: process.env.EMAIL_USER,
+//         pass: process.env.EMAIL_PASS
+//     },
+//     tls: {
+//         rejectUnauthorized: false, // allow self-signed certs
+//     },
+// })
 
 //send OTP
 
@@ -67,19 +65,28 @@ export const sendOTP = async (req, res) => {
         console.log("opStore[email]", opStore[email]);
 
 
+
+         await resend.emails.send({
+      from: "onboarding@resend.dev", // test sender (works for free)
+      to: email,
+      subject: "Your OTP Code",
+      html: `<p>Hello ${username}, your OTP is <b>${otp}</b></p>`,
+    });
+
+
         // Send OTP via Gmail
 
-        const info = await transporter.sendMail({
+        // const info = await transporter.sendMail({
 
-            from: `"Priyanka" <${process.env.BREVO_USER}>`,    //sender Email
-            to: email,
-            subject: "Your OTP Code",  // email subject
-            text: `Hello Priyanka, your OTP is: ${otp}`,  // Plain text (for fallback)
-            html: `<b>Hello,</b><br><p>Your OTP is: <strong>${otp}</strong></p>`, // HTML body
+        //     from: `"Priyanka" <${process.env.EMAIL_USER}>`,    //sender Email
+        //     to: email,
+        //     subject: "Your OTP Code",  // email subject
+        //     text: `Hello Priyanka, your OTP is: ${otp}`,  // Plain text (for fallback)
+        //     html: `<b>Hello Priyanka,</b><br><p>Your OTP is: <strong>${otp}</strong></p>`, // HTML body
 
-        });
+        // });
 
-        console.log("OTP sent successfully to:", info.envelope.to);
+        // console.log("OTP sent successfully to:", info.envelope.to);
 
 
 
@@ -92,7 +99,7 @@ export const sendOTP = async (req, res) => {
         //     html: `<b>Hello ${username},</b><br><p>Your OTP is: <strong>${otp}</strong></p>`,
         // });
 
-        console.log("OTP sent successfully:", info);
+        // console.log("OTP sent successfully:", info);
 
         return res.status(200).json({
             success: true,
