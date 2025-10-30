@@ -67,8 +67,8 @@ export const sendOTP = async (req, res) => {
 
 
          await resend.emails.send({
-    //   from: "onboarding@resend.dev", // test sender (works for free)
-      from: "Priyanka <noreply@myapp.vercel.app>",
+      from: "onboarding@resend.dev", // test sender (works for free)
+    //   from: "Priyanka <noreply@myapp.vercel.app>",
 
       to: email,
       subject: "Your OTP Code",
